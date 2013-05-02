@@ -20,6 +20,10 @@ public class DListNode extends ListNode {
   protected DListNode prev;
   protected DListNode next;
 
+  public DListNode(Object i, DList l){
+	  item = i;
+	  myList = l;
+  }
   /**
    *  DListNode() constructor.
    *  @param i the item to store in the node.

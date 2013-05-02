@@ -2,23 +2,31 @@ package list;
 
 public class HashEntry{
 	protected Object key;
-	protected Object value;
-	protected DListNode vertex;
+	protected int value;
+	protected DListNode node;
 	
-	public HashEntry(Object k, Object v){
+	public HashEntry(Object k, int v){
 		key = k;
 		value = v;
 	}
 	public HashEntry(DListNode v){
-		vertex = v;
+		node = v;
 	}
 	
 	public Object key(){
 		return key;
 	}
 	
-	public Object value(){
+	public int value(){
 		return value;
+	}
+	
+	public DListNode node(){
+		return node;
+	}
+	
+	public void setNode(DListNode v){
+		node = v;
 	}
 	
 }

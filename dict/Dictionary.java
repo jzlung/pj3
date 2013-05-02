@@ -40,7 +40,7 @@ public interface Dictionary {
    *  @return an entry containing the key and value.
    **/
 
-  public HashEntry insert(Object key, Object value);
+  public HashEntry insert(Object key, int value);
 
   /** 
    *  Search for an entry with the specified key.  If such an entry is found,

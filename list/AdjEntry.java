@@ -1,11 +1,11 @@
 package list;
 
 public class AdjEntry{
-	public ListNode partner;
-	public ListNode start;
-	public ListNode end;
+	public DListNode partner;
+	public DListNode start;
+	public DListNode end;
 	
-	public AdjEntry(ListNode p, ListNode s, ListNode e){
+	public AdjEntry(DListNode p, DListNode s, DListNode e){
 		partner = p;
 		start = s;
 		end = e;
