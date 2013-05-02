@@ -25,8 +25,12 @@ public class HashEntry{
 		return node;
 	}
 	
-	public void setNode(DListNode v){
-		node = v;
+	public void setValue(int v){
+		value = v;
+	}
+	
+	public void setNode(DListNode n){
+		node = n;
 	}
 	
 }

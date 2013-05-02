@@ -75,7 +75,7 @@ public class WUGraph {
 	 * Running time:  O(1).
 	 */
 	public void addVertex(Object vertex){
-		HashEntry h = vTable.insert(vertex, null);
+		HashEntry h = vTable.insert(vertex, Integer.MIN_VALUE);
 		if (h != null){
 			ListEntry newEntry = new ListEntry(vertex);
 			vList.insertBack(newEntry);
@@ -152,18 +152,17 @@ public class WUGraph {
 		else {
 			int deg = degree(vertex);
 			Neighbors n = new Neighbors();
-			Object[] neighList = new Object[deg];
-			int[] wateList = new int[deg];
+			n.neighborList = new Object[deg];
+			n.weightList = new int[deg];
 
 			ListEntry l = (ListEntry) h.node().item();
 			DListNode curr = (DListNode) l.adjList.front();
+
 			for(int i = 0; i < deg; i++){
-				neighList[i] = 
-						wateList[i] = curr.
-						curr = (DListNode) curr.next();
+				n.neighborList[i] = ((ListEntry)((AdjEntry) curr.item()).start.item()).vertex; 
+				n.weightList[i] = weight(vertex, n.neighborList[i]);
+				curr = (DListNode) curr.next();
 			}
-
-
 			return n;
 		}
 	}
@@ -177,7 +176,37 @@ public class WUGraph {
 	 *
 	 * Running time:  O(1).
 	 */
-	public void addEdge(Object u, Object v, int weight);
+	public void addEdge(Object u, Object v, int weight){
+		HashEntry uu = vTable.find(u);
+		HashEntry vv = vTable.find(v);
+
+		if (uu != null && vv != null){
+
+			VertexPair newPair = new VertexPair(u,v);
+			HashEntry h = eTable.find(newPair);
+
+			if (h == null){
+				h = eTable.insert(newPair, weight);
+				
+				DListNode U = uu.node();
+				DListNode V = vv.node();
+				AdjEntry add = new AdjEntry(U,V);
+				((ListEntry) U.item()).adjList.insertBack(add);
+				((ListEntry) V.item()).adjList.insertBack(add);
+				
+				h.setNode((DListNode) ((ListEntry) V.item()).adjList.back());
+				
+				DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
+				DListNode VV = (DListNode) ((ListEntry) V.item()).adjList.back();
+				
+				((AdjEntry) UU.item()).partner = VV;
+				((AdjEntry) VV.item()).partner = UU;
+			}
+			else {
+				h.setValue(weight);
+			}
+		}
+	}
 
 	/**
 	 * removeEdge() removes an edge (u, v) from the graph.  If either of the

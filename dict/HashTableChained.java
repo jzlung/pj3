@@ -53,7 +53,8 @@ public class HashTableChained implements Dictionary {
 	 **/
 
 	public HashTableChained() {
-		htable = new DList[101];
+		htable = new DList[1];
+		htable[0] = new DList();
 	}
 
 	/**
@@ -164,12 +165,12 @@ public class HashTableChained implements Dictionary {
 	public HashEntry find(Object key) {
 		int h = key.hashCode();
 		int hz = compFunction(h);
-		ListNode pointer = htable[hz].front();
+		DListNode pointer = (DListNode) htable[hz].front();
 		for(int j = 0; j < htable[hz].length(); j++) {
 			if(((HashEntry) pointer.item()).key().equals(key)){
 				return ((HashEntry) pointer.item());    			
 			}
-			pointer = pointer.next();
+			pointer = (DListNode) pointer.next();
 		}
 		return null;
 	}
