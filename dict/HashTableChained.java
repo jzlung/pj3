@@ -35,6 +35,7 @@ public class HashTableChained implements Dictionary {
 			N++;
 		}
 		htable = new DList[N];
+		size = 0;
 	}
 
 
@@ -55,6 +56,7 @@ public class HashTableChained implements Dictionary {
 	public HashTableChained() {
 		htable = new DList[1];
 		htable[0] = new DList();
+		size = 0;
 	}
 
 	/**
@@ -94,14 +96,15 @@ public class HashTableChained implements Dictionary {
 	 **/
 
 	public boolean isEmpty() {
-		int i = 0;
-		while(i < htable.length){
-			if(htable[i] != null){
-				return false;
-			}
-			i++;
-		}
-		return true;
+//		int i = 0;
+//		while(i < htable.length){
+//			if(htable[i] != null){
+//				return false;
+//			}
+//			i++;
+//		}
+//		return true;
+		return size == 0;
 	}
 
 	/**
@@ -128,9 +131,8 @@ public class HashTableChained implements Dictionary {
 	//  }
 
 
-	public HashEntry insert(Object key, int value) { 
-		if (!find(key).key().equals(key)){
-
+	public HashEntry insert(Object key, int value) {
+		if (find(key) == null || !find(key).key().equals(key)){
 			if ((double)(size/htable.length) >= 0.75) {
 				updateTable(htable.length*2);
 			}
@@ -238,10 +240,14 @@ public class HashTableChained implements Dictionary {
 
 	private void updateTable(int newSize) {
 		HashTableChained newTable = new HashTableChained(newSize);
+		int counter = 0;
 		for (DList bucket : htable) {
 			DListNode curr = (DListNode) bucket.front();
-			while (curr != null) {
+			while (counter < size) {
+				newTable.insert(((HashEntry)curr.item()).key(), ((HashEntry)curr.item()).value());
 				curr = (DListNode) curr.next();
+				counter++;
+				System.out.println("adsf");
 			}
 		}
 		htable = newTable.htable;
