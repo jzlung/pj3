@@ -116,29 +116,32 @@ protected int size; //strictly the number of entries, elements
    *  @return an entry containing the key and value.
    **/
   
-  public Entry insert(Object key, Object value) {
-	  if ((double)(numEntries/numBuckets) >= 0.75) {
-		  updateTable(numBuckets*2);
-	  }
-	  Entry newEntry = new Entry(key, value);
-	  htable[compFunction(key.hashCode())].back().insertAfter(newEntry);
-	  numEntries++;
-	  return newEntry;
-  }
-  
 //  public Entry insert(Object key, Object value) {
-//    Entry entry = new Entry(key, value);
-//    if(htable[compFunction(key.hashCode())] == null){
-//    	SList news = new SList();
-//    	htable[compFunction(key.hashCode())] = news;
-//        htable[compFunction(key.hashCode())].insertBack(entry);
-//    } else{
-//    	htable[compFunction(key.hashCode())].insertBack(entry);
-//    }
-//    
-//    size++;
-//    return entry;
+//	  if ((double)(numEntries/numBuckets) >= 0.75) {
+//		  updateTable(numBuckets*2);
+//	  }
+//	  Entry newEntry = new Entry(key, value);
+//	  htable[compFunction(key.hashCode())].back().insertAfter(newEntry);
+//	  numEntries++;
+//	  return newEntry;
 //  }
+   
+  
+  public Entry insert(Object key, Object value) {
+	if ((double)(size/htable.length) >= 0.75) {
+	  updateTable(htable.length*2);
+	}
+    Entry newEntry = new Entry(key, value);
+    if(htable[compFunction(key.hashCode())] == null){
+    	DList news = new DList();
+    	htable[compFunction(key.hashCode())] = news;
+        htable[compFunction(key.hashCode())].insertBack(newEntry);
+    } else{
+    	htable[compFunction(key.hashCode())].insertBack(newEntry);
+    }
+    size++;
+    return newEntry;
+  }
 
   /** 
    *  Search for an entry with the specified key.  If such an entry is found,
@@ -179,13 +182,13 @@ protected int size; //strictly the number of entries, elements
    */
   
   public Entry remove(Object key) {
-	  if ((double)(numEntries/numBuckets) <= 0.25) {
-		  updateTable(numBuckets/2);
+	  if ((double)(size/htable.length) <= 0.25) {
+		  updateTable(htable.length/2);
 	  }
 	  int numTable = compFunction(key.hashCode());
-	  Entry removed = (Entry) htable[numTable].front().remove();
+	  Entry removed = (Entry) htable[numTable].front().remove(); //Works because never more than one entry in bucket
 	  if (removed != null) {
-		  numEntries--;
+		  size--;
 	  }
 	  return removed;
   }
@@ -226,11 +229,6 @@ protected int size; //strictly the number of entries, elements
 //	  return count;
 //  }
 
-  private int numEntries;
-  private int numBuckets = htable.length;
-
-
-
   private void updateTable(int newSize) {
 	  HashTableChained newTable = new HashTableChained(newSize);
 	  for (DList bucket : htable) {
@@ -241,8 +239,7 @@ protected int size; //strictly the number of entries, elements
 		  }
 	  }
 	  htable = newTable.htable;
-	  numBuckets = newTable.numBuckets;
-	  numEntries = newTable.numEntries;
+	  size = newTable.size;
   }
 
 
