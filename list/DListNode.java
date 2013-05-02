@@ -139,26 +139,21 @@ public class DListNode extends ListNode {
    *
    *  Performance:  runs in O(1) time.
    */
-  public void remove(){ //throws InvalidNodeException {
+  public Object remove() { //throws InvalidNodeException {
 //    if (!isValidNode()) {
 //      throw new InvalidNodeException("remove() called on invalid node");
 //    }
-    // Your solution here.  Will look something like your Homework 4 solution,
-    //   but changes are necessary.  For instance, there is no need to check if
-    //   "this" is null.  Remember that this node's "myList" field tells you
-    //   what DList it's in.
 
 	  this.prev.next = this.next;
 	  this.next.prev = this.prev;
 	  myList.size--;
 
-
-
-    // Make this node an invalid node, so it cannot be used to corrupt myList.
+	  // Make this node an invalid node, so it cannot be used to corrupt myList.
     myList = null;
     // Set other references to null to improve garbage collection.
     next = null;
     prev = null;
+    return this.item();
   }
 
 }

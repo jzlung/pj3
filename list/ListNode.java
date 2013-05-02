@@ -104,6 +104,6 @@ public abstract class ListNode {
    *
    *  @exception InvalidNodeException if this node is not valid.
    */
-  public abstract void remove();// throws InvalidNodeException;
+  public abstract Object remove();// throws InvalidNodeException;
 
 }
