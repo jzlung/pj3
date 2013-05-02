@@ -127,11 +127,11 @@ protected int size; //STRICTLY the number of entries, elements
 //  }
    
   
-  public Entry insert(Object key, Object value) { //value set to null when adding vertices
+  public HashEntry insert(Object key, Object value) { //value set to null when adding vertices
 	if ((double)(size/htable.length) >= 0.75) {
 	  updateTable(htable.length*2);
 	}
-    Entry newEntry = new Entry(key, value);
+    HashEntry newEntry = new HashEntry(key, value);
     if(htable[compFunction(key.hashCode())] == null){
     	DList news = new DList();
     	htable[compFunction(key.hashCode())] = news;
@@ -155,13 +155,13 @@ protected int size; //STRICTLY the number of entries, elements
    *          no entry contains the specified key.
    **/
 
-  public Entry find(Object key) {
+  public HashEntry find(Object key) {
     int h = key.hashCode();
     int hz = compFunction(h);
     ListNode pointer = htable[hz].front();
     	for(int j = 0; j < htable[hz].length(); j++) {
-    		if(((Entry) pointer.item()).key().equals(key)){
-    			return ((Entry) pointer.item());    			
+    		if(((HashEntry) pointer.item()).key().equals(key)){
+    			return ((HashEntry) pointer.item());    			
     		}
     		pointer = pointer.next();
     	}
@@ -181,12 +181,12 @@ protected int size; //STRICTLY the number of entries, elements
    *          no entry contains the specified key.
    */
   
-  public Entry remove(Object key) {
+  public HashEntry remove(Object key) {
 	  if ((double)(size/htable.length) <= 0.25) {
 		  updateTable(htable.length/2);
 	  }
 	  int numTable = compFunction(key.hashCode());
-	  Entry removed = (Entry) htable[numTable].front().remove(); //Works because never more than one entry in bucket
+	  HashEntry removed = (HashEntry) htable[numTable].front().remove(); //Works because never more than one entry in bucket
 	  if (removed != null) {
 		  size--;
 	  }
@@ -234,7 +234,6 @@ protected int size; //STRICTLY the number of entries, elements
 	  for (DList bucket : htable) {
 		  DListNode curr = (DListNode) bucket.front();
 		  while (curr != null) {
-			  newTable.insert(((Entry) curr.item()).key(), ((Entry) curr.item()).value());
 			  curr = (DListNode) curr.next();
 		  }
 	  }

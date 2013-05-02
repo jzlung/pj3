@@ -2,6 +2,8 @@
 
 package dict;
 
+import list.HashEntry;
+
 /**
  *  An interface for (unordered) dictionary ADTs.
  *
@@ -38,7 +40,7 @@ public interface Dictionary {
    *  @return an entry containing the key and value.
    **/
 
-  public Entry insert(Object key, Object value);
+  public HashEntry insert(Object key, Object value);
 
   /** 
    *  Search for an entry with the specified key.  If such an entry is found,
@@ -50,7 +52,7 @@ public interface Dictionary {
    *          no entry contains the specified key.
    **/
 
-  public Entry find(Object key);
+  public HashEntry find(Object key);
 
   /** 
    *  Remove an entry with the specified key.  If such an entry is found,
@@ -63,7 +65,7 @@ public interface Dictionary {
    *          no entry contains the specified key.
    */
 
-  public Entry remove(Object key);
+  public HashEntry remove(Object key);
 
   /**
    *  Remove all entries from the dictionary.
