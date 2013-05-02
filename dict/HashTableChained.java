@@ -21,7 +21,7 @@ public class HashTableChained implements Dictionary {
    *  Place any data fields here.
    **/
 DList[] htable;
-protected int size; //strictly the number of entries, elements
+protected int size; //STRICTLY the number of entries, elements
 
   /** 
    *  Construct a new empty hash table intended to hold roughly sizeEstimate
@@ -127,7 +127,7 @@ protected int size; //strictly the number of entries, elements
 //  }
    
   
-  public Entry insert(Object key, Object value) {
+  public Entry insert(Object key, Object value) { //value set to null when adding vertices
 	if ((double)(size/htable.length) >= 0.75) {
 	  updateTable(htable.length*2);
 	}
@@ -241,6 +241,4 @@ protected int size; //strictly the number of entries, elements
 	  htable = newTable.htable;
 	  size = newTable.size;
   }
-
-
 }
