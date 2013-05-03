@@ -29,13 +29,13 @@ public interface Queue {
    *  @return the item dequeued.
    *  @throws a QueueEmptyException if the Queue is empty.
    **/
-  public Object dequeue() throws QueueEmptyException;
+  public Object dequeue();
 
   /**
    *  front() returns the object at the front of the Queue.
    *  @return the item at the front of the Queue.
    *  @throws a QueueEmptyException if the Queue is empty.
    **/
-  public Object front() throws QueueEmptyException;
+  public Object front();
 
 }

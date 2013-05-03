@@ -53,11 +53,10 @@ public class LinkedQueue implements Queue {
   /**
    *  dequeue() removes and returns the object at the front of the Queue.
    *  @return the item dequeued.
-   *  @throws a QueueEmptyException if the Queue is empty.
    **/
-  public Object dequeue() throws QueueEmptyException {
+  public Object dequeue() {
     if (head == null) {
-      throw new QueueEmptyException();
+      return null;
     } else {
       Object o = head.item;
       head = head.next;
@@ -72,16 +71,14 @@ public class LinkedQueue implements Queue {
   /**
    *  dequeue() returns the object at the front of the Queue.
    *  @return the item at the front of the Queue.
-   *  @throws a QueueEmptyException if the Queue is empty.
    **/
-  public Object front() throws QueueEmptyException {
+  public Object front() {
     if (head == null) {
-      throw new QueueEmptyException();
+      return null;
     } else {
       return head.item;
     }
   }
-
   /**
    *
    *  nth() returns the nth item in this LinkedQueue, without removing it.
@@ -122,13 +119,9 @@ public class LinkedQueue implements Queue {
    **/
   public String toString() {
     String out = "[ ";
-    try {
       for (int i = 0; i < size(); i++) {
 	out = out + front() + " ";
 	enqueue(dequeue());
-      }
-    } catch (QueueEmptyException uf) {
-      System.err.println("Error:  attempt to dequeue from empty queue.");
     }
     return out + "]";
   }
