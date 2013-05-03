@@ -13,8 +13,6 @@ public class DListNode extends ListNode {
    *  (inherited)  myList references the List that contains this node.
    *  prev references the previous node in the DList.
    *  next references the next node in the DList.
-   *
-   *  DO NOT CHANGE THE FOLLOWING FIELD DECLARATIONS.
    **/
 
   protected DListNode prev;
@@ -53,57 +51,37 @@ public class DListNode extends ListNode {
   }
 
   /**
-   *  next() returns the node following this node.  If this node is invalid,
-   *  throws an exception.
+   *  next() returns the node following this node.
    *
    *  @return the node following this node.
-   *  @exception InvalidNodeException if this node is not valid.
    *
    *  Performance:  runs in O(1) time.
    */
-  public ListNode next(){ //throws InvalidNodeException {
-//    if (!isValidNode()) {
-//      throw new InvalidNodeException("next() called on invalid node");
-//    }
+  public ListNode next(){ 
     return next;
   }
 
   /**
-   *  prev() returns the node preceding this node.  If this node is invalid,
-   *  throws an exception.
+   *  prev() returns the node preceding this node.
    *
    *  @param node the node whose predecessor is sought.
    *  @return the node preceding this node.
-   *  @exception InvalidNodeException if this node is not valid.
    *
    *  Performance:  runs in O(1) time.
    */
-  public ListNode prev() { //throws InvalidNodeException {
-//    if (!isValidNode()) {
-//      throw new InvalidNodeException("prev() called on invalid node");
-//    }
+  public ListNode prev() { 
     return prev;
   }
 
   /**
-   *  insertAfter() inserts an item immediately following this node.  If this
-   *  node is invalid, throws an exception.
+   *  insertAfter() inserts an item immediately following this node. 
    *
    *  @param item the item to be inserted.
-   *  @exception InvalidNodeException if this node is not valid.
    *
    *  Performance:  runs in O(1) time.
    */
 
-  public void insertAfter(Object item){ //throws InvalidNodeException {
-//    if (!isValidNode()) {
-//      throw new InvalidNodeException("insertAfter() called on invalid node");
-//    }
-    // Your solution here.  Will look something like your Homework 4 solution,
-    //   but changes are necessary.  For instance, there is no need to check if
-    //   "this" is null.  Remember that this node's "myList" field tells you
-    //   what DList it's in.  You should use myList.newNode() to create the
-    //   new node.
+  public void insertAfter(Object item){
     DListNode inserted = ((DList)myList).newNode(item, (DList) this.myList, this, this.next);
 	  this.next.prev = inserted;
 	  this.next = inserted;
@@ -111,23 +89,13 @@ public class DListNode extends ListNode {
   }
 
   /**
-   *  insertBefore() inserts an item immediately preceding this node.  If this
-   *  node is invalid, throws an exception.
+   *  insertBefore() inserts an item immediately preceding this node.
    *
    *  @param item the item to be inserted.
-   *  @exception InvalidNodeException if this node is not valid.
    *
    *  Performance:  runs in O(1) time.
    */
-  public void insertBefore(Object item){ //throws InvalidNodeException {
-//    if (!isValidNode()) {
-//      throw new InvalidNodeException("insertBefore() called on invalid node");
-//    }
-    // Your solution here.  Will look something like your Homework 4 solution,
-    //   but changes are necessary.  For instance, there is no need to check if
-    //   "this" is null.  Remember that this node's "myList" field tells you
-    //   what DList it's in.  You should use myList.newNode() to create the
-    //   new node.
+  public void insertBefore(Object item){ 
 
     DListNode inserted = ((DList) myList).newNode(item,(DList) myList, this.prev, this);
 	  this.prev.next = inserted;
@@ -136,24 +104,16 @@ public class DListNode extends ListNode {
   }
 
   /**
-   *  remove() removes this node from its DList.  If this node is invalid,
-   *  throws an exception.
-   *
-   *  @exception InvalidNodeException if this node is not valid.
+   *  remove() removes this node from its DList. 
    *
    *  Performance:  runs in O(1) time.
    */
-  public Object remove() { //throws InvalidNodeException {
-//    if (!isValidNode()) {
-//      throw new InvalidNodeException("remove() called on invalid node");
-//    }
+  public Object remove() { 
 	  this.prev.next = this.next;
 	  this.next.prev = this.prev;
 	  myList.size--;
 
-	  // Make this node an invalid node, so it cannot be used to corrupt myList.
     myList = null;
-    // Set other references to null to improve garbage collection.
     next = null;
     prev = null;
     return this.item();

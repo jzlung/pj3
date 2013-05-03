@@ -35,19 +35,14 @@ public class Kruskal {
 				allEdges.enqueue(insertThis);		// Add it to the list of edges
 			}
 		}
-
 		mergeSort(allEdges); 						// Sort the edges by weight in O(E log E).
-
 		int sizeEstimate = 4 * numVertices / 3;
 		HashTableChained htable = new HashTableChained(sizeEstimate);			// Map vertices to Hash Table, give them unique integer value for DJ, in O(V). 
 		for (int m = 0; m < gVertices.length; m++) {
-			Vertex insertMe = new Vertex(gVertices[m], g.getNeighbors(gVertices[m]));
 			htable.insert(gVertices[m], m);
 		}
-
 		DisjointSets V = new DisjointSets(numVertices);
-
-		while (!allEdges.isEmpty()) {
+		while (!allEdges.isEmpty()) {				// Iterate through/dequeue all the edges
 			Edge curr = (Edge) allEdges.dequeue();
 			int v1 = htable.find(curr.vertex1).value;
 			int v2 = htable.find(curr.vertex2).value;
@@ -62,7 +57,7 @@ public class Kruskal {
 			}
 		} 
 		return T;
-	}					// End minSpanTree()
+	}
 
 
 	/**

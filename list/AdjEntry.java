@@ -1,6 +1,13 @@
 package list;
 
 public class AdjEntry{
+	/*
+	 * Container for adjacency list's ListNodes' item fields
+	 * @partner points to the corresponding ListNode in the other vertex's adjacency list, as detailed in the project diagram given.
+	 * @start points to the ListNode in the vertex list of the first vertex in the edge
+	 * @end points to the ListNode in the vertex list of the second vertex in the edge
+	 */
+	
 	public DListNode partner;
 	public DListNode start;
 	public DListNode end;

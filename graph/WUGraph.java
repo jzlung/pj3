@@ -272,9 +272,6 @@ public class WUGraph {
 	 * Running time:  O(1).
 	 */
 	public void removeEdge(Object u, Object v) {
-		//partner DOUBLE MURDER SUICIDE 
-		//node
-		//hashtable
 		VertexPair removal = new VertexPair(u, v);
 		HashEntry found = eTable.find(removal);
 
@@ -289,8 +286,6 @@ public class WUGraph {
 				firstVertex.remove();
 				secondVertex.remove();
 			}
-			//ERROR IS ALWAYS BECAUSE OF THE SECOND ONE. something wrong with remove
-			//	  this.prev.next = this.next; is null for the second one
 			eTable.remove(removal);
 		}
 	}
@@ -323,8 +318,6 @@ public class WUGraph {
 	 * Running time:  O(1).
 	 */
 	public int weight(Object u, Object v) {
-		//find the vertexpair hashcode -> bucket -> value
-		//eTable key is vertexpair, value is int weight
 		VertexPair findWeight = new VertexPair(u, v);
 		HashEntry found = eTable.find(findWeight);
 		if (found == null) {
