@@ -30,13 +30,9 @@ public class HashTableChained implements Dictionary {
 	 **/
 
 	public HashTableChained(int sizeEstimate) {
-		int N = 10*sizeEstimate / 7;
-		while (isPrime(N) != true) {
-			N++;
-		}
-		htable = new DList[N];
+		htable = new DList[sizeEstimate];
 		size = 0;
-		for (int i = 0; i < N; i++){
+		for (int i = 0; i < sizeEstimate; i++){
 			htable[i] = new DList();
 		}
 
@@ -165,9 +161,12 @@ public class HashTableChained implements Dictionary {
 
 	public HashEntry find(Object key) {
 		int h = key.hashCode();
+		//		System.out.println("hashcode for: " + h);
 		int hz = compFunction(h);
+		//		System.out.println(hz);
 
 		DListNode pointer = (DListNode) htable[hz].front();
+
 		for(int j = 0; j < htable[hz].length(); j++) {
 			if(((HashEntry) pointer.item()).key().equals(key)){
 				return ((HashEntry) pointer.item());    			
@@ -190,71 +189,85 @@ public class HashTableChained implements Dictionary {
 	 *          no entry contains the specified key.
 	 */
 
-	public void remove(Object key) {
+	public HashEntry remove(Object key) {
+		HashEntry h = find(key);
 
-		if ((double)(size/htable.length) <= 0.25) {
-			updateTable(htable.length/2);
+		if (h != null){
+
+			if ((double)(size/htable.length) <= 0.25) {
+				updateTable(htable.length/2);
+			}
+
+			int numTable = compFunction(key.hashCode());
+			((DListNode) htable[numTable].front()).remove(); //Works because never more than one entry in bucket
+
+			size--;	
+			return h;
 		}
-
-		int numTable = compFunction(key.hashCode());
-		HashEntry removed = (HashEntry) htable[numTable].front().remove(); //Works because never more than one entry in bucket
-		if (removed != null) {
-			size--;
-		}	
+		return null;
 	}
 
+	//  public Entry remove(Object key) {
+	//	    int h = key.hashCode();
+	//	    int hz = compFunction(h);
+	//	    ListNode pointer = htable[hz].front();
+	//	    	for(int j = 0; j < htable[hz].length(); j++) {
+	//	    		if(((Entry) pointer.item()).key().equals(key)){
+	//	    	    	Entry removed = (Entry) pointer.item();
+	//	    	    	pointer.remove();
+	//	    	    	size--;
+	//	    	    	return removed;	 			
+	//	    		}
+	//	    	}   	
+	//	    return null;
+	//  }
 
-//  public Entry remove(Object key) {
-//	    int h = key.hashCode();
-//	    int hz = compFunction(h);
-//	    ListNode pointer = htable[hz].front();
-//	    	for(int j = 0; j < htable[hz].length(); j++) {
-//	    		if(((Entry) pointer.item()).key().equals(key)){
-//	    	    	Entry removed = (Entry) pointer.item();
-//	    	    	pointer.remove();
-//	    	    	size--;
-//	    	    	return removed;	 			
-//	    		}
-//	    	}   	
-//	    return null;
-//  }
-
-/**
- *  Remove all entries from the dictionary.
- */
-public void makeEmpty() {
-	htable = new DList[htable.length];
-	//    for(int i = 0; i < this.size(); i++){
-	//    	htable[i] = new SList();
-	//    }
-	size = 0;
-}
-
-//  public int collisions() {
-//	  int count = 0;
-//	  for(int i = 0; i < htable.length; i++){
-//		  if(htable[i] != null) {
-//			  count = count + htable[i].length()-1;
-//		  }
-//	  }
-//	  return count;
-//  }
-
-private void updateTable(int newSize) {
-	HashTableChained newTable = new HashTableChained(newSize);
-	int counter = 0;
-	for (DList bucket : htable) {
-		DListNode curr = (DListNode) bucket.front();
-		while (counter < bucket.length()) {
-			HashEntry add = newTable.insert(((HashEntry)curr.item()).key(), ((HashEntry)curr.item()).value());
-			add.setNode(((HashEntry)curr.item()).node());
-
-			curr = (DListNode) curr.next();
-			counter++;
-		}
-		counter = 0;
+	/**
+	 *  Remove all entries from the dictionary.
+	 */
+	public void makeEmpty() {
+		htable = new DList[htable.length];
+		//    for(int i = 0; i < this.size(); i++){
+		//    	htable[i] = new SList();
+		//    }
+		size = 0;
 	}
-	htable = newTable.htable;
-	size = newTable.size;
-}
+
+	//  public int collisions() {
+	//	  int count = 0;
+	//	  for(int i = 0; i < htable.length; i++){
+	//		  if(htable[i] != null) {
+	//			  count = count + htable[i].length()-1;
+	//		  }
+	//	  }
+	//	  return count;
+	//  }
+
+	private void updateTable(int newSize) {
+		HashTableChained newTable = new HashTableChained(newSize);
+		int counter = 0;
+		for (DList bucket : htable) {
+			DListNode curr = (DListNode) bucket.front();
+			while (counter < bucket.length()) {
+				HashEntry add = newTable.insert(((HashEntry)curr.item()).key(), ((HashEntry)curr.item()).value());
+				add.setNode(((HashEntry)curr.item()).node());
+
+				curr = (DListNode) curr.next();
+				counter++;
+			}
+			counter = 0;
+		}
+		htable = newTable.htable;
+		size = newTable.size;
+	}
+
+	public int collisions() {
+		int count = 0;
+		for(int i = 0; i < htable.length; i++){
+			if (htable[i].length() != 0){
+				count = count + htable[i].length()-1;
+			}
+		}
+		return count;
+	}
 }

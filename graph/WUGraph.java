@@ -10,7 +10,7 @@ import list.*;
  */
 
 public class WUGraph {
-	private HashTableChained vTable;			//Hash table of Vertices
+	public HashTableChained vTable;			//Hash table of Vertices
 	private HashTableChained eTable;			//Hash table of Edges
 	private DList vList;							//DList of Vertices
 
@@ -93,15 +93,17 @@ public class WUGraph {
 	public void removeVertex(Object vertex){
 
 		HashEntry h = vTable.find(vertex);
-		
+		System.out.println(h == null);
+
 		if (h != null){
 			DListNode vNode = h.node();
-			
+
 			vTable.remove(h.key());
+			System.out.println((vNode == null));
 
-			DList allEdges = ((ListEntry) (vNode.item())).adjList;
+			DList allEdges = ((ListEntry) vNode.item()).adjList;
 
-			if (allEdges != null){
+			if (allEdges.length() != 0){
 				DListNode curr = (DListNode) allEdges.front();
 				int counter = allEdges.length();
 
@@ -227,16 +229,25 @@ public class WUGraph {
 				DListNode U = uu.node();
 				DListNode V = vv.node();
 				AdjEntry add = new AdjEntry(U,V);
-				((ListEntry) U.item()).adjList.insertBack(add);
-				((ListEntry) V.item()).adjList.insertBack(add);
 
-				h.setNode((DListNode) ((ListEntry) V.item()).adjList.back());
+				if (U == V){
+					((ListEntry) U.item()).adjList.insertBack(add);
+					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
+					DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
+					((AdjEntry) UU.item()).partner = UU;
+				}
+				else {
+					((ListEntry) U.item()).adjList.insertBack(add);
+					((ListEntry) V.item()).adjList.insertBack(add);
 
-				DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
-				DListNode VV = (DListNode) ((ListEntry) V.item()).adjList.back();
+					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
 
-				((AdjEntry) UU.item()).partner = VV;
-				((AdjEntry) VV.item()).partner = UU;
+					DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
+					DListNode VV = (DListNode) ((ListEntry) V.item()).adjList.back();
+
+					((AdjEntry) UU.item()).partner = VV;
+					((AdjEntry) VV.item()).partner = UU;
+				}
 			}
 			else {
 				h.setValue(weight);
