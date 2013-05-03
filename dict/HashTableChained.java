@@ -36,6 +36,10 @@ public class HashTableChained implements Dictionary {
 		}
 		htable = new DList[N];
 		size = 0;
+		for (int i = 0; i < N; i++){
+			htable[i] = new DList();
+		}
+
 	}
 
 
@@ -96,14 +100,14 @@ public class HashTableChained implements Dictionary {
 	 **/
 
 	public boolean isEmpty() {
-//		int i = 0;
-//		while(i < htable.length){
-//			if(htable[i] != null){
-//				return false;
-//			}
-//			i++;
-//		}
-//		return true;
+		//		int i = 0;
+		//		while(i < htable.length){
+		//			if(htable[i] != null){
+		//				return false;
+		//			}
+		//			i++;
+		//		}
+		//		return true;
 		return size == 0;
 	}
 
@@ -137,13 +141,8 @@ public class HashTableChained implements Dictionary {
 				updateTable(htable.length*2);
 			}
 			HashEntry newEntry = new HashEntry(key, value);
-			if(htable[compFunction(key.hashCode())] == null){
-				DList news = new DList();
-				htable[compFunction(key.hashCode())] = news;
-				htable[compFunction(key.hashCode())].insertBack(newEntry);
-			} else{
-				htable[compFunction(key.hashCode())].insertBack(newEntry);
-			}
+
+			htable[compFunction(key.hashCode())].insertBack(newEntry);
 			size++;
 			return newEntry;
 		}
@@ -167,6 +166,7 @@ public class HashTableChained implements Dictionary {
 	public HashEntry find(Object key) {
 		int h = key.hashCode();
 		int hz = compFunction(h);
+		System.out.println(htable.length + " " + hz + " " + (htable[hz] == null));
 		DListNode pointer = (DListNode) htable[hz].front();
 		for(int j = 0; j < htable[hz].length(); j++) {
 			if(((HashEntry) pointer.item()).key().equals(key)){
@@ -244,6 +244,7 @@ public class HashTableChained implements Dictionary {
 		for (DList bucket : htable) {
 			DListNode curr = (DListNode) bucket.front();
 			while (counter < size) {
+				System.out.println( ((HashEntry)curr.item()) == null);
 				newTable.insert(((HashEntry)curr.item()).key(), ((HashEntry)curr.item()).value());
 				curr = (DListNode) curr.next();
 				counter++;
