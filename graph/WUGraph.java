@@ -10,8 +10,8 @@ import list.*;
  */
 
 public class WUGraph {
-	public HashTableChained vTable;			//Hash table of Vertices
-	public HashTableChained eTable;			//Hash table of Edges
+	private HashTableChained vTable;			//Hash table of Vertices
+	private HashTableChained eTable;			//Hash table of Edges
 	private DList vList;							//DList of Vertices
 
 	/**
@@ -79,7 +79,7 @@ public class WUGraph {
 		if (h != null){
 			ListEntry newEntry = new ListEntry(vertex);
 			vList.insertBack(newEntry);
-			h.setNode((DListNode) vList.back());
+			h.node = ((DListNode) vList.back());
 		}
 	}
 
@@ -95,9 +95,9 @@ public class WUGraph {
 		HashEntry h = vTable.find(vertex);
 
 		if (h != null){
-			DListNode vNode = h.node();
+			DListNode vNode = h.node;
 
-			vTable.remove(h.key());
+			vTable.remove(h.key);
 
 			DList allEdges = ((ListEntry) vNode.item()).adjList;
 
@@ -112,7 +112,7 @@ public class WUGraph {
 					Object v = ((ListEntry) e.item()).vertex;
 
 					VertexPair vP = new VertexPair(u,v);
-					eTable.remove((eTable.find(vP)).key()); 
+					eTable.remove((eTable.find(vP)).key); 
 				
 					if (((AdjEntry) curr.item()).partner != curr) {
 						((AdjEntry) curr.item()).partner.remove();
@@ -155,7 +155,7 @@ public class WUGraph {
 			return 0;
 		}
 		else {
-			ListEntry e = (ListEntry) h.node().item();
+			ListEntry e = (ListEntry) h.node.item();
 			return e.adjList.length();
 		}
 	}
@@ -183,7 +183,7 @@ public class WUGraph {
 		if (h == null){
 			return null;
 		}
-		if (((ListEntry) h.node().item()).adjList.length() == 0){
+		if (((ListEntry) h.node.item()).adjList.length() == 0){
 			return null;
 		}
 		else {
@@ -192,7 +192,7 @@ public class WUGraph {
 			n.neighborList = new Object[deg];
 			n.weightList = new int[deg];
 
-			ListEntry l = (ListEntry) h.node().item();
+			ListEntry l = (ListEntry) h.node.item();
 			DListNode curr = (DListNode) l.adjList.front();
 
 			for(int i = 0; i < deg; i++){
@@ -224,14 +224,14 @@ public class WUGraph {
 			if (h == null){
 				h = eTable.insert(newPair, weight);
 
-				DListNode U = uu.node();
-				DListNode V = vv.node();
+				DListNode U = uu.node;
+				DListNode V = vv.node;
 				AdjEntry add = new AdjEntry(U,V);
 				AdjEntry add1 = new AdjEntry(V,U);
 
 				if (U == V){
 					((ListEntry) U.item()).adjList.insertBack(add);
-					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
+					h.node = ((DListNode) ((ListEntry) U.item()).adjList.back());
 
 					DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
 					((AdjEntry) UU.item()).partner = UU;
@@ -240,9 +240,7 @@ public class WUGraph {
 					((ListEntry) U.item()).adjList.insertBack(add);
 					((ListEntry) V.item()).adjList.insertBack(add1);
 
-					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
-					h.setNode1((DListNode) ((ListEntry) V.item()).adjList.back());
-
+					h.node = ((DListNode) ((ListEntry) U.item()).adjList.back());
 
 					DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
 					DListNode VV = (DListNode) ((ListEntry) V.item()).adjList.back();
@@ -252,7 +250,7 @@ public class WUGraph {
 
 			}
 			else {
-				h.setValue(weight);
+				h.value = weight;
 			}
 		}
 	}
@@ -281,7 +279,7 @@ public class WUGraph {
 		HashEntry found = eTable.find(removal);
 
 		if (found != null) {
-			DListNode firstVertex = found.node();
+			DListNode firstVertex = found.node;
 			DListNode secondVertex = ((AdjEntry) firstVertex.item()).partner;
 
 			if(firstVertex == secondVertex){
@@ -332,7 +330,7 @@ public class WUGraph {
 		if (found == null) {
 			return 0;
 		}
-		return found.value();
+		return found.value;
 	}
 
 
