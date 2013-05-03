@@ -7,17 +7,20 @@ Samuel Paul cs61b-os
 
 Our hash table is mostly a copy of Jerry Lung's homework 6 solution. 
 
-We have List which is extended by DList, and ListNode extended by DListNode. The implementation of ListNode and DListNode 
+We have a List class which is extended by DList, and ListNode extended by DListNode. The implementation of ListNode and DListNode 
 that we are using has the myList field.
 
-We have interface Queue, extended by LinkedQueues. These codes are a copy of homework 8, with the exception 
+We have an interface Queue, extended by LinkedQueues. These codes are a copy of homework 8, with the exception 
 QueueEmptyException removed - we expect to code in a way such that these errors will always be avoided. LinkedQueue uses
 SListNodes. 
 
 Since we have a Hash Table being a table of DLists, we created three different containers for the three different data 
-structures encountered in Part 1. These containers are referenced by DListNode's item field. AdjEntry is for Adjacency Lists, 
-HashEntry is the item for hash table entries, ListEntry is for the list of vertices. Each container just stores fields intrinsic 
-to the data structure. 
+structures encountered in Part 1. These containers are referenced by DListNode's item field. AdjEntry is for Adjacency Lists, and stores the necessary pointers to the "partner" edges (as detailed in the provided diagram), as well as pointers to listnodes that represent the vertices in the vertex list that the edge connects.
+HashEntry is the item for hash table entries, and stores pointers to the corresponding listnode (Vertex list listnodes for the vertex hash table, and Adjacency List listnodes for the edge hash table), as well as the key and value. For vertices and edges, the key is simply the Object or VertexPair that was passed in initially, and the value represents the weight of the edge (the values for vertices are set to -infinity). ListEntry is for the list of vertices, and stores pointers to the respective adjacency list and the original vertex object the listnode represents internally. Each container just stores fields intrinsic 
+to the data structure that are necessary to maniupulate the structures within the time constraints. 
 
-To support getVertices() in O(|V|) time, we made a list of the vertices. getVertices() would thus only have to traverse this 
-list and feed it into an array preset by the number of vertices, thus taking O(|V|) time. 
+Overall, we simply followed the diagram provided in designing our data structures. We had 2 hash tables, one for vertices and one for edges; a doubly-linked list for vertices; and a doubly-linked list serving as an adjacency list for each vertex. All of the listnodes store slightly different items, as detailed above, so we made 3 different Entry classes (HashEntry, ListEntry, AdjEntry) to accomodate those differences. 
+
+To support removeVertex() in O(d) time, we maintained an adjacency list for each vertex and a hash table for all the edges, as detailed in the project 3 diagram. To remove a vertex, we have to iterate through all its edges and remove those, which takes O(d) time. For a given edge, the adjacency list nodes for a given vertex store pointers to their "partner" list nodes in another vertex's adjacency list. This, along with the edge hash table, allows us to remove all edges and references to edges incident on our chosen vertex in O(1) time. Thus our total run time is O(d) time.
+
+To support getVertices() in O(|V|) time, we made a doubly-linked list to store the vertices. Each of the list nodes in this list contain a pointer to the original vertex object. To obtain all the vertices, getVertices() would thus only have to traverse this list and feed in the original objects into an array preset by the number of vertices, thus taking O(|V|) time. 
