@@ -105,20 +105,22 @@ public class WUGraph {
 
 			if (allEdges.length() != 0){
 				DListNode curr = (DListNode) allEdges.front();
-				int counter = allEdges.length();
-
-				while (counter > 0){
+				int counter = 0;
+				System.out.println(allEdges.length() + " are we here");
+				while (counter < allEdges.length()){
+					System.out.println((curr == null));
 					DListNode s = ((AdjEntry) curr.item()).start;
 					DListNode e = ((AdjEntry) curr.item()).end;
 					Object u = ((ListEntry) s.item()).vertex;
 					Object v = ((ListEntry) e.item()).vertex;
 
-					VertexPair vP = new VertexPair(u,v);
-					eTable.remove((eTable.find(vP)).key()); 
-
-					((AdjEntry) curr.item()).partner.remove();
+					removeEdge(u,v);
+					//					VertexPair vP = new VertexPair(u,v);
+					//					eTable.remove((eTable.find(vP)).key()); 
+					//
+					//					((AdjEntry) curr.item()).partner.remove();
 					curr = (DListNode) curr.next();
-					counter--;
+					counter++;
 				}
 				((ListEntry) vNode.item()).adjList = null;
 			}
@@ -217,6 +219,7 @@ public class WUGraph {
 	public void addEdge(Object u, Object v, int weight){
 		HashEntry uu = vTable.find(u);
 		HashEntry vv = vTable.find(v);
+		System.out.println("maybe they're screwed by find: " + (uu == vv));
 
 		if (uu != null && vv != null){
 
@@ -237,8 +240,10 @@ public class WUGraph {
 					((AdjEntry) UU.item()).partner = UU;
 				}
 				else {
+					System.out.println("are listentries same " + (((ListEntry) U.item()) == ((ListEntry) V.item())));
 					((ListEntry) U.item()).adjList.insertBack(add);
 					((ListEntry) V.item()).adjList.insertBack(add);
+					System.out.println("are adjlist the same " + (((ListEntry) U.item()).adjList == ((ListEntry) V.item()).adjList));
 
 					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
 
@@ -247,6 +252,7 @@ public class WUGraph {
 
 					((AdjEntry) UU.item()).partner = VV;
 					((AdjEntry) VV.item()).partner = UU;
+					System.out.println("FUCK THIS THIST " + (UU.myList() != VV.myList()));
 				}
 			}
 			else {
@@ -268,13 +274,26 @@ public class WUGraph {
 		//node
 		//hashtable
 		VertexPair removal = new VertexPair(u, v);
+		System.out.println("screwed at first? :" + (u == v));
 		HashEntry found = eTable.find(removal);
+
 		if (found != null) {
 			DListNode firstVertex = found.node();
 			DListNode secondVertex = ((AdjEntry) firstVertex.item()).partner;
-			secondVertex.remove();
-			firstVertex.remove();
+			System.out.println("same list too? " + (firstVertex.myList() == secondVertex.myList()));
+			System.out.println("are they the same " + (firstVertex == secondVertex));
+
+			if(firstVertex == secondVertex){
+				firstVertex.remove();
+			}
+			else {
+				firstVertex.remove();
+				secondVertex.remove();
+			}
+			//ERROR IS ALWAYS BECAUSE OF THE SECOND ONE. something wrong with remove
+			//	  this.prev.next = this.next; is null for the second one
 			eTable.remove(removal);
+			System.out.println("clean removal? " + (eTable.find(removal) == null));
 		}
 	}
 

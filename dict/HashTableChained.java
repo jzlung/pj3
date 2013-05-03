@@ -38,16 +38,6 @@ public class HashTableChained implements Dictionary {
 
 	}
 
-
-	public static boolean isPrime(int n) {
-		for (int divisor = 2; divisor < n; divisor++) { 
-			if (n % divisor == 0) {                       
-				return false;                                 
-			}                                                
-		}
-		return true;
-	}
-
 	/** 
 	 *  Construct a new empty hash table with a default size.  Say, a prime in
 	 *  the neighborhood of 100.
@@ -199,28 +189,46 @@ public class HashTableChained implements Dictionary {
 			}
 
 			int numTable = compFunction(key.hashCode());
+			DListNode pointer = (DListNode) htable[numTable].front();
+			for (int i = 0; i < htable[numTable].length(); i++){
+				if(((HashEntry) pointer.item()).key().equals(key)){
+					HashEntry removed = (HashEntry) pointer.item();
+					pointer.remove();
+					size--;
+					return h;	 			
+				}
+				pointer = (DListNode) pointer.next();
+			}
 			((DListNode) htable[numTable].front()).remove(); //Works because never more than one entry in bucket
 
-			size--;	
-			return h;
 		}
 		return null;
 	}
 
-	//  public Entry remove(Object key) {
-	//	    int h = key.hashCode();
-	//	    int hz = compFunction(h);
-	//	    ListNode pointer = htable[hz].front();
-	//	    	for(int j = 0; j < htable[hz].length(); j++) {
-	//	    		if(((Entry) pointer.item()).key().equals(key)){
-	//	    	    	Entry removed = (Entry) pointer.item();
-	//	    	    	pointer.remove();
-	//	    	    	size--;
-	//	    	    	return removed;	 			
-	//	    		}
-	//	    	}   	
-	//	    return null;
-	//  }
+//	public HashEntry remove(Object key) {
+//		int h = key.hashCode();
+//		int hz = compFunction(h);
+//		ListNode pointer = htable[hz].front();
+//		HashEntry hE = find(key);
+//
+//		if (hE != null){
+//
+//			if ((double)(size/htable.length) <= 0.25) {
+//				updateTable(htable.length/2);
+//			}
+//
+//			for(int j = 0; j < htable[hz].length(); j++) {
+//				if(((HashEntry) pointer.item()).key().equals(key)){
+//					HashEntry removed = (HashEntry) pointer.item();
+//					pointer.remove();
+//					size--;
+//					return hE;	 			
+//				}
+//				pointer = pointer.next();
+//			} 
+//		}
+//		return null;
+//	}
 
 	/**
 	 *  Remove all entries from the dictionary.

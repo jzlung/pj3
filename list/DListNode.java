@@ -148,6 +148,7 @@ public class DListNode extends ListNode {
 //      throw new InvalidNodeException("remove() called on invalid node");
 //    }
 
+	  System.out.println("this. prev is null? " + (this.prev == null));
 	  this.prev.next = this.next;
 	  this.next.prev = this.prev;
 	  myList.size--;
@@ -159,5 +160,8 @@ public class DListNode extends ListNode {
     prev = null;
     return this.item();
   }
-
+  
+  public DList myList() {
+	  return (DList) myList;
+  }
 }
