@@ -4,6 +4,7 @@ public class HashEntry{
 	protected Object key;
 	protected int value;
 	protected DListNode node;
+	protected DListNode node1;
 	
 	public HashEntry(Object k, int v){
 		key = k;
@@ -28,6 +29,10 @@ public class HashEntry{
 	
 	public void setNode(DListNode n){
 		node = n;
+	}
+	
+	public void setNode1(DListNode n){
+		node1 = n;
 	}
 	
 }

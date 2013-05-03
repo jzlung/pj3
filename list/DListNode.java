@@ -147,8 +147,6 @@ public class DListNode extends ListNode {
 //    if (!isValidNode()) {
 //      throw new InvalidNodeException("remove() called on invalid node");
 //    }
-
-	  System.out.println("this. prev is null? " + (this.prev == null));
 	  this.prev.next = this.next;
 	  this.next.prev = this.prev;
 	  myList.size--;

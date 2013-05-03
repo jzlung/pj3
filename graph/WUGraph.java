@@ -11,7 +11,7 @@ import list.*;
 
 public class WUGraph {
 	public HashTableChained vTable;			//Hash table of Vertices
-	private HashTableChained eTable;			//Hash table of Edges
+	public HashTableChained eTable;			//Hash table of Edges
 	private DList vList;							//DList of Vertices
 
 	/**
@@ -93,36 +93,33 @@ public class WUGraph {
 	public void removeVertex(Object vertex){
 
 		HashEntry h = vTable.find(vertex);
-		System.out.println(h == null);
 
 		if (h != null){
 			DListNode vNode = h.node();
 
 			vTable.remove(h.key());
-			System.out.println((vNode == null));
 
 			DList allEdges = ((ListEntry) vNode.item()).adjList;
 
 			if (allEdges.length() != 0){
 				DListNode curr = (DListNode) allEdges.front();
 				int counter = 0;
-				System.out.println(allEdges.length() + " are we here");
 				while (counter < allEdges.length()){
-					System.out.println((curr == null));
+
 					DListNode s = ((AdjEntry) curr.item()).start;
 					DListNode e = ((AdjEntry) curr.item()).end;
 					Object u = ((ListEntry) s.item()).vertex;
 					Object v = ((ListEntry) e.item()).vertex;
 
-					removeEdge(u,v);
-					//					VertexPair vP = new VertexPair(u,v);
-					//					eTable.remove((eTable.find(vP)).key()); 
-					//
-					//					((AdjEntry) curr.item()).partner.remove();
+					VertexPair vP = new VertexPair(u,v);
+					eTable.remove((eTable.find(vP)).key()); 
+				
+					if (((AdjEntry) curr.item()).partner != curr) {
+						((AdjEntry) curr.item()).partner.remove();
+					}
 					curr = (DListNode) curr.next();
 					counter++;
 				}
-				((ListEntry) vNode.item()).adjList = null;
 			}
 			vNode.remove();
 		}
@@ -197,12 +194,10 @@ public class WUGraph {
 
 			ListEntry l = (ListEntry) h.node().item();
 			DListNode curr = (DListNode) l.adjList.front();
-			
-			System.out.println("SHOULD HAVE THIS MANY : " + deg);
+
 			for(int i = 0; i < deg; i++){
-				n.neighborList[i] = ((ListEntry)((AdjEntry) curr.item()).start.item()).vertex; 
+				n.neighborList[i] = ((ListEntry)((AdjEntry) curr.item()).end.item()).vertex; 
 				n.weightList[i] = weight(vertex, n.neighborList[i]);
-				
 				curr = (DListNode) curr.next();
 			}
 			return n;
@@ -232,30 +227,42 @@ public class WUGraph {
 				DListNode U = uu.node();
 				DListNode V = vv.node();
 				AdjEntry add = new AdjEntry(U,V);
+				AdjEntry add1 = new AdjEntry(V,U);
 
 				if (U == V){
 					((ListEntry) U.item()).adjList.insertBack(add);
 					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
+
 					DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
 					((AdjEntry) UU.item()).partner = UU;
 				}
 				else {
 					((ListEntry) U.item()).adjList.insertBack(add);
-					((ListEntry) V.item()).adjList.insertBack(add);
+					((ListEntry) V.item()).adjList.insertBack(add1);
 
 					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
+					h.setNode1((DListNode) ((ListEntry) V.item()).adjList.back());
+
 
 					DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
 					DListNode VV = (DListNode) ((ListEntry) V.item()).adjList.back();
-
-					((AdjEntry) UU.item()).partner = UU;
-					((AdjEntry) VV.item()).partner = VV;
+					((AdjEntry) UU.item()).partner = VV;
+					((AdjEntry) VV.item()).partner = UU;
 				}
+
 			}
 			else {
 				h.setValue(weight);
 			}
 		}
+	}
+
+	public String arrayToString(int[] ints) {
+		String result = " ";
+		for (int i = 0; i < ints.length; i++) {
+			result = result + ints[i] + " ";
+		}
+		return result;
 	}
 
 	/**
@@ -276,7 +283,7 @@ public class WUGraph {
 		if (found != null) {
 			DListNode firstVertex = found.node();
 			DListNode secondVertex = ((AdjEntry) firstVertex.item()).partner;
-			
+
 			if(firstVertex == secondVertex){
 				firstVertex.remove();
 			}

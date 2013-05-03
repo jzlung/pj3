@@ -44,8 +44,8 @@ public class HashTableChained implements Dictionary {
 	 **/
 
 	public HashTableChained() {
-		htable = new DList[101];
-		for (int i = 0; i < 101; i++){
+		htable = new DList[13];
+		for (int i = 0; i < 13; i++){
 			htable[i] = new DList();
 		}
 		size = 0;
@@ -196,7 +196,7 @@ public class HashTableChained implements Dictionary {
 					HashEntry removed = (HashEntry) pointer.item();
 					pointer.remove();
 					size--;
-					return h;	 			
+					return removed;	 			
 				}
 				pointer = (DListNode) pointer.next();
 			}

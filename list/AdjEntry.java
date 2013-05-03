@@ -9,8 +9,5 @@ public class AdjEntry{
 		start = s;
 		end = e;
 	}
-	public AdjEntry(DListNode p, DListNode s, DListNode e){
-		this(s,e);
-		partner = p;
-	}
+	
 }
