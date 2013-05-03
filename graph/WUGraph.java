@@ -197,10 +197,12 @@ public class WUGraph {
 
 			ListEntry l = (ListEntry) h.node().item();
 			DListNode curr = (DListNode) l.adjList.front();
-
+			
+			System.out.println("SHOULD HAVE THIS MANY : " + deg);
 			for(int i = 0; i < deg; i++){
 				n.neighborList[i] = ((ListEntry)((AdjEntry) curr.item()).start.item()).vertex; 
 				n.weightList[i] = weight(vertex, n.neighborList[i]);
+				
 				curr = (DListNode) curr.next();
 			}
 			return n;
@@ -219,8 +221,6 @@ public class WUGraph {
 	public void addEdge(Object u, Object v, int weight){
 		HashEntry uu = vTable.find(u);
 		HashEntry vv = vTable.find(v);
-		System.out.println("maybe they're screwed by find: " + (uu == vv));
-
 		if (uu != null && vv != null){
 
 			VertexPair newPair = new VertexPair(u,v);
@@ -240,19 +240,16 @@ public class WUGraph {
 					((AdjEntry) UU.item()).partner = UU;
 				}
 				else {
-					System.out.println("are listentries same " + (((ListEntry) U.item()) == ((ListEntry) V.item())));
 					((ListEntry) U.item()).adjList.insertBack(add);
 					((ListEntry) V.item()).adjList.insertBack(add);
-					System.out.println("are adjlist the same " + (((ListEntry) U.item()).adjList == ((ListEntry) V.item()).adjList));
 
 					h.setNode((DListNode) ((ListEntry) U.item()).adjList.back());
 
 					DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
 					DListNode VV = (DListNode) ((ListEntry) V.item()).adjList.back();
 
-					((AdjEntry) UU.item()).partner = VV;
-					((AdjEntry) VV.item()).partner = UU;
-					System.out.println("FUCK THIS THIST " + (UU.myList() != VV.myList()));
+					((AdjEntry) UU.item()).partner = UU;
+					((AdjEntry) VV.item()).partner = VV;
 				}
 			}
 			else {
@@ -274,15 +271,12 @@ public class WUGraph {
 		//node
 		//hashtable
 		VertexPair removal = new VertexPair(u, v);
-		System.out.println("screwed at first? :" + (u == v));
 		HashEntry found = eTable.find(removal);
 
 		if (found != null) {
 			DListNode firstVertex = found.node();
 			DListNode secondVertex = ((AdjEntry) firstVertex.item()).partner;
-			System.out.println("same list too? " + (firstVertex.myList() == secondVertex.myList()));
-			System.out.println("are they the same " + (firstVertex == secondVertex));
-
+			
 			if(firstVertex == secondVertex){
 				firstVertex.remove();
 			}
@@ -293,7 +287,6 @@ public class WUGraph {
 			//ERROR IS ALWAYS BECAUSE OF THE SECOND ONE. something wrong with remove
 			//	  this.prev.next = this.next; is null for the second one
 			eTable.remove(removal);
-			System.out.println("clean removal? " + (eTable.find(removal) == null));
 		}
 	}
 

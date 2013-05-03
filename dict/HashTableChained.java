@@ -44,8 +44,10 @@ public class HashTableChained implements Dictionary {
 	 **/
 
 	public HashTableChained() {
-		htable = new DList[1];
-		htable[0] = new DList();
+		htable = new DList[101];
+		for (int i = 0; i < 101; i++){
+			htable[i] = new DList();
+		}
 		size = 0;
 	}
 
@@ -154,6 +156,7 @@ public class HashTableChained implements Dictionary {
 		//		System.out.println("hashcode for: " + h);
 		int hz = compFunction(h);
 		//		System.out.println(hz);
+//		System.out.println("WTF HZ " + hz + " " + (htable[hz] == null));
 
 		DListNode pointer = (DListNode) htable[hz].front();
 
@@ -183,11 +186,9 @@ public class HashTableChained implements Dictionary {
 		HashEntry h = find(key);
 
 		if (h != null){
-
 			if ((double)(size/htable.length) <= 0.25) {
 				updateTable(htable.length/2);
 			}
-
 			int numTable = compFunction(key.hashCode());
 			DListNode pointer = (DListNode) htable[numTable].front();
 			for (int i = 0; i < htable[numTable].length(); i++){
@@ -199,8 +200,6 @@ public class HashTableChained implements Dictionary {
 				}
 				pointer = (DListNode) pointer.next();
 			}
-			((DListNode) htable[numTable].front()).remove(); //Works because never more than one entry in bucket
-
 		}
 		return null;
 	}
