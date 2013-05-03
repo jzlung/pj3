@@ -3,9 +3,7 @@
 package list;
 
 /**
- *  A List is a mutable list ADT.  No implementation is provided.
- *
- *  DO NOT CHANGE THIS FILE.
+ *  A List is a mutable list ADT.
  **/
 
 public abstract class List {
@@ -54,8 +52,7 @@ public abstract class List {
 
   /**
    *  front() returns the node at the front of this List.  If the List is
-   *  empty, return an "invalid" node--a node with the property that any
-   *  attempt to use it will cause an exception.
+   *  empty, return null.
    *
    *  @return a ListNode at the front of this List.
    */
@@ -63,8 +60,7 @@ public abstract class List {
 
   /**
    *  back() returns the node at the back of this List.  If the List is
-   *  empty, return an "invalid" node--a node with the property that any
-   *  attempt to use it will cause an exception.
+   *  empty, return null. 
    *
    *  @return a ListNode at the back of this List.
    */

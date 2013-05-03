@@ -1,6 +1,6 @@
 /* Queue.java */
 
-package list;
+package kruskalmaterials;
 
 public interface Queue {
 

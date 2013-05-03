@@ -1,6 +1,7 @@
 /* LinkedQueue.java */
 
-package list;
+package kruskalmaterials;
+
 
 public class LinkedQueue implements Queue {
 
@@ -32,7 +33,10 @@ public class LinkedQueue implements Queue {
    *  Performance:  runs in O(1) time.
    **/
   public boolean isEmpty() {
-    return size == 0;
+    if (size == 0) {
+    	return true;
+    }
+    return false;
   }
 
   /**
