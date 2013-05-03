@@ -90,7 +90,40 @@ public class WUGraph {
 	 *
 	 * Running time:  O(d), where d is the degree of "vertex".
 	 */
-	public void removeVertex(Object vertex);
+	public void removeVertex(Object vertex){
+
+		HashEntry h = vTable.find(vertex);
+		
+		if (h != null){
+			DListNode vNode = h.node();
+			
+			vTable.remove(h.key());
+
+			DList allEdges = ((ListEntry) (vNode.item())).adjList;
+
+			if (allEdges != null){
+				DListNode curr = (DListNode) allEdges.front();
+				int counter = allEdges.length();
+
+				while (counter > 0){
+					DListNode s = ((AdjEntry) curr.item()).start;
+					DListNode e = ((AdjEntry) curr.item()).end;
+					Object u = ((ListEntry) s.item()).vertex;
+					Object v = ((ListEntry) e.item()).vertex;
+
+					VertexPair vP = new VertexPair(u,v);
+					eTable.remove((eTable.find(vP)).key()); 
+
+					((AdjEntry) curr.item()).partner.remove();
+					curr = (DListNode) curr.next();
+					counter--;
+				}
+				((ListEntry) vNode.item()).adjList = null;
+			}
+			vNode.remove();
+		}
+
+	}
 
 	/**
 	 * isVertex() returns true if the parameter "vertex" represents a vertex of
@@ -149,6 +182,9 @@ public class WUGraph {
 		if (h == null){
 			return null;
 		}
+		if (((ListEntry) h.node().item()).adjList.length() == 0){
+			return null;
+		}
 		else {
 			int deg = degree(vertex);
 			Neighbors n = new Neighbors();
@@ -187,18 +223,18 @@ public class WUGraph {
 
 			if (h == null){
 				h = eTable.insert(newPair, weight);
-				
+
 				DListNode U = uu.node();
 				DListNode V = vv.node();
 				AdjEntry add = new AdjEntry(U,V);
 				((ListEntry) U.item()).adjList.insertBack(add);
 				((ListEntry) V.item()).adjList.insertBack(add);
-				
+
 				h.setNode((DListNode) ((ListEntry) V.item()).adjList.back());
-				
+
 				DListNode UU = (DListNode) ((ListEntry) U.item()).adjList.back();
 				DListNode VV = (DListNode) ((ListEntry) V.item()).adjList.back();
-				
+
 				((AdjEntry) UU.item()).partner = VV;
 				((AdjEntry) VV.item()).partner = UU;
 			}

@@ -9,9 +9,6 @@ public class HashEntry{
 		key = k;
 		value = v;
 	}
-	public HashEntry(DListNode v){
-		node = v;
-	}
 	
 	public Object key(){
 		return key;

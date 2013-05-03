@@ -6,6 +6,7 @@ public class ListEntry{
 	
 	public ListEntry(Object v){
 		vertex = v;
+		adjList = new DList();
 	}
 	
 	public ListEntry(Object v, DList l){

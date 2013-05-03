@@ -65,7 +65,7 @@ public interface Dictionary {
    *          no entry contains the specified key.
    */
 
-  public HashEntry remove(Object key);
+  public void remove(Object key);
 
   /**
    *  Remove all entries from the dictionary.
